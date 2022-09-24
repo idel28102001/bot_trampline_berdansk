@@ -78,7 +78,7 @@ export class CouponsService {
         'C.status',
       ])
       .getOne();
-    if (!coupon) {
+    if (coupon === null) {
       const user = await this.usersService.repo
         .createQueryBuilder('U')
         .leftJoin('U.coupons', 'coupons')
