@@ -1,22 +1,26 @@
 import { Module } from '@nestjs/common';
-import { TelegramService } from './services/telegram.service';
 import * as dotenv from 'dotenv';
 import { TelegrafModule } from 'nestjs-telegraf';
-import { TelegramUpdate } from './update/telegram.update';
-import { MenuWizard } from './wizards/menu.wizard';
 import { session } from 'telegraf';
 import { UsersModule } from '../users/users.module';
+import { DatabaseModule } from '../database/database.module';
+import { TelegramProvider } from './telegram.provider';
+import { TelegramTokensEnum } from './enum/tokens/telegram.tokens.enum';
+import { CouponsModule } from '../coupons/coupons.module';
 
 dotenv.config();
 
 @Module({
   imports: [
+    DatabaseModule,
     TelegrafModule.forRoot({
       token: process.env.TOKEN,
       middlewares: [session()],
     }),
     UsersModule,
+    CouponsModule,
   ],
-  providers: [TelegramService, TelegramUpdate, MenuWizard],
+  providers: TelegramProvider,
+  exports: [TelegramTokensEnum.TELEGRAM_SERVICE_TOKEN],
 })
 export class TelegramModule {}
