@@ -97,8 +97,7 @@ export class CouponsService {
         await this.couponUserRepo.save(cuser);
         await ctx.reply(`${HopCoupon.name}\n\nПромокод: ${value}`);
       }
-    }
-    {
+    } else {
       await ctx.reply(`${HopCoupon.name}\n\nПромокод: ${coupon.value}`);
     }
   }
