@@ -161,6 +161,7 @@ export class MenuWizard {
     if (isNaN(firstNum) || firstNum > SUGGESTS.length + 1 || firstNum < 0) {
       await ctx.reply('Пожалуйста - выберите из списка возможных вариантов');
       await ctx.wizard.selectStep(4);
+      return;
     }
     if (firstNum === 5) {
       await ctx.reply('Введите ваш запрос)');
