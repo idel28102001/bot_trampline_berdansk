@@ -95,10 +95,16 @@ export class CouponsService {
           value,
         });
         await this.couponUserRepo.save(cuser);
-        await ctx.reply(`${HopCoupon.name}\n\nПромокод: ${value}`);
+        await ctx.replyWithPhoto(
+          'https://telegra.ph/file/94e4db4c303c37fbbb42b.jpg',
+          { caption: `${HopCoupon.name}\n\nПромокод: ${value}` },
+        );
       }
     } else {
-      await ctx.reply(`${HopCoupon.name}\n\nПромокод: ${coupon.value}`);
+      await ctx.replyWithPhoto(
+        'https://telegra.ph/file/94e4db4c303c37fbbb42b.jpg',
+        { caption: `${HopCoupon.name}\n\nПромокод: ${coupon.value}` },
+      );
     }
   }
 }

@@ -25,11 +25,13 @@ export class TelegramService {
     ctx: Context,
     order: { name: string; phone: string; num: number; event: string },
   ) {
+    const cntx = ctx as any;
+    const event = cntx.session.event
+      ? cntx.session.event.slice(2)
+      : 'Заказать звонок';
     await ctx.telegram.sendMessage(
       process.env.CHATBOOK,
-      `Заказ номер: ${order.num}\nИмя: ${order.name}\nТелефон:${
-        order.phone
-      }\nЗапрос: ${order.event.slice(2)}`,
+      `Заказ номер: ${order.num}\nИмя: ${order.name}\nТелефон:${order.phone}\nЗапрос: ${event}`,
       {
         reply_markup: {
           inline_keyboard: [[{ text: 'Готово', callback_data: 'done' }]],
