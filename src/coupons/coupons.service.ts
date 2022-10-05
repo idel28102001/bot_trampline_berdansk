@@ -7,6 +7,7 @@ import { CouponUserEntity } from './entities/coupon-user.entity';
 import { UsersTokensEnum } from '../users/enum/users.tokens.enum';
 import { UsersService } from '../users/users.service';
 import { StatusEnum } from './enum/status.enum';
+import { KEYBOARD_MENU } from '../common/constants';
 
 @Injectable()
 export class CouponsService {
@@ -97,13 +98,19 @@ export class CouponsService {
         await this.couponUserRepo.save(cuser);
         await ctx.replyWithPhoto(
           'https://telegra.ph/file/94e4db4c303c37fbbb42b.jpg',
-          { caption: `${HopCoupon.name}\n\nПромокод: ${value}` },
+          {
+            caption: `${HopCoupon.name}\n\nПромокод: ${value}`,
+            reply_markup: { keyboard: KEYBOARD_MENU, resize_keyboard: true },
+          },
         );
       }
     } else {
       await ctx.replyWithPhoto(
         'https://telegra.ph/file/94e4db4c303c37fbbb42b.jpg',
-        { caption: `${HopCoupon.name}\n\nПромокод: ${coupon.value}` },
+        {
+          caption: `${HopCoupon.name}\n\nПромокод: ${coupon.value}`,
+          reply_markup: { keyboard: KEYBOARD_MENU, resize_keyboard: true },
+        },
       );
     }
   }

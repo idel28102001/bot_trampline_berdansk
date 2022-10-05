@@ -1,18 +1,37 @@
 export const MENULIST = [
-  '1💥 Забронировать',
-  '2📱 Контакты',
-  '3🎰 Что есть в центре',
-  '4🎁 Получить промокод',
-  '5📞 Заказать звонок',
+  '💥 Забронировать',
+  '📱 Контакты',
+  '🎰 Что есть в центре',
+  '🎁 Получить промокод',
+  '📞 Заказать звонок',
 ];
 
+export const chunk = (array: Array<any>, chunkSize: number) => {
+  const R = [];
+  for (let i = 0; i < array.length; i += chunkSize)
+    R.push(array.slice(i, i + chunkSize));
+  return R;
+};
+
+export const KEYBOARD_MENU = chunk(
+  MENULIST.map((e) => ({ text: String(e) })),
+  2,
+);
+
 export const SUGGESTS = [
-  '1 🤹‍♂ Заказать праздник ДР',
-  '2 📩 Забронировать посещение',
-  '3 🏒 Бесплатная игра в хоккей',
-  '4 🎰 Бесплатная игра в хватайку',
-  '5 🤷 Cвой вариант',
+  '🤹‍♂ Заказать праздник ДР',
+  '📩 Забронировать посещение',
+  '🏒 Бесплатная игра в хоккей',
+  '🎰 Бесплатная игра в хватайку',
+  '🤷 Cвой вариант',
 ];
+
+const suggest = [...SUGGESTS, 'Отмена'];
+
+export const SUGGESTS_MENU = chunk(
+  suggest.map((e) => ({ text: String(e) })),
+  2,
+);
 
 export const ADMINMENULIST = [
   '1💌 Создать акцию с купонами',

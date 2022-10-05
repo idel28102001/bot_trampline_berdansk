@@ -1,4 +1,4 @@
-import { Action, Command, Update } from 'nestjs-telegraf';
+import { Action, Command, Hears, Update } from 'nestjs-telegraf';
 import { Context } from 'telegraf';
 import * as dotenv from 'dotenv';
 import { UsersService } from '../../users/users.service';
@@ -6,6 +6,9 @@ import { Inject } from '@nestjs/common';
 import { UsersTokensEnum } from '../../users/enum/users.tokens.enum';
 import { CouponsService } from '../../coupons/coupons.service';
 import { CouponsTokenEnum } from '../../coupons/enum/tokens/coupons.token.enum';
+import { MENULIST } from '../../common/constants';
+import { TelegramTokensEnum } from '../enum/tokens/telegram.tokens.enum';
+import { TelegramService } from '../telegram.service';
 
 dotenv.config();
 
@@ -16,16 +19,43 @@ export class TelegramUpdate {
     private readonly usersService: UsersService,
     @Inject(CouponsTokenEnum.COUPONS_SERVICE_TOKEN)
     private readonly couponsService: CouponsService,
+    @Inject(TelegramTokensEnum.TELEGRAM_SERVICE_TOKEN)
+    private readonly telegramService: TelegramService,
   ) {}
 
   @Command('/menu')
   async menu(ctx: Context) {
-    await (ctx as any).scene.enter('menu');
+    await this.telegramService.menu(ctx);
   }
 
   @Command('/adminmenu')
   async adminMenu(ctx: Context) {
     await (ctx as any).scene.enter('admin-menu');
+  }
+
+  @Hears(MENULIST[0])
+  async bookEvent(ctx: Context) {
+    await this.telegramService.bookEvent(ctx);
+  }
+
+  @Hears(MENULIST[1])
+  async contacts(ctx: Context) {
+    await this.telegramService.contacts(ctx);
+  }
+
+  @Hears(MENULIST[2])
+  async whatDoWeGot(ctx: Context) {
+    await this.telegramService.whatDoWeGot(ctx);
+  }
+
+  @Hears(MENULIST[3])
+  async getPromoCode(ctx: Context) {
+    await this.telegramService.getPromoCode(ctx);
+  }
+
+  @Hears(MENULIST[4])
+  async orderCall(ctx: Context) {
+    await this.telegramService.orderCall(ctx);
   }
 
   @Command('/sellermenu')
@@ -39,9 +69,11 @@ export class TelegramUpdate {
       (ctx.update as any)?.message?.from?.id || 0,
     );
     const value = await this.couponsService.getTodayCoupon();
-    await ctx.reply(
-      `Приветствую вас!\n\nПодпишитесь на наш канал, чтобы получить промокод\n\n"${value}"!\n\n\nА пока подписываетесь - посмотрите наши предложения и заброниуйте место! /menu`,
+    await ctx.replyWithPhoto(
+      'https://telegra.ph/file/2338821e51523163311d5.jpg',
       {
+        caption: `Привет!\n\nПодпишитесь на наш канал, чтобы получить промокод\n\n"${value}"!\n\n\nУ нас есть развлечения для каждого ребёнка!`,
+
         reply_markup: {
           inline_keyboard: [
             [
@@ -55,6 +87,7 @@ export class TelegramUpdate {
         },
       },
     );
+    setTimeout(() => this.telegramService.menu(ctx), 2000);
   }
 
   @Action('done')
@@ -90,8 +123,9 @@ export class TelegramUpdate {
         }
         default: {
           await ctx.reply(
-            'Вы не подписались... Но не беда!\nВам не обязателен промокод, чтобы посмотреть, что мы можем предложить! Введите /menu,что бы ознакомится)',
+            'Вы не подписались... Но не беда!\nВам не обязателен промокод, чтобы посмотреть, что мы можем вам предложить!',
           );
+          await this.telegramService.menu(ctx);
           break;
         }
       }
