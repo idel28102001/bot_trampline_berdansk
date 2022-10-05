@@ -48,7 +48,7 @@ export class TelegramUpdate {
               { text: 'Подписался', callback_data: 'subscribed' },
               {
                 text: 'Подписка',
-                url: 'https://t.me/+5P8-nkCW6HwxYTNi',
+                url: 'https://t.me/jumpcitybrd',
               },
             ],
           ],

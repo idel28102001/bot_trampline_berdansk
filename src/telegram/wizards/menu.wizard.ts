@@ -81,23 +81,16 @@ export class MenuWizard {
         await ctx.replyWithPhoto(
           'https://telegra.ph/file/ca298582542555bb19a77.jpg',
           {
-            caption: `Наши контакты:\n${process.env.CONTACTS.split('\\n').join(
-              '\n',
-            )}`,
+            caption:
+              `Наши контакты:\n${process.env.CONTACTS.split('\\n').join(
+                '\n',
+              )}` + `\n\nМы находимся по адресу:\n${process.env.ADRESS}`,
           },
         );
         await ctx.scene.leave();
         break;
       }
       case '3': {
-        await ctx.replyWithPhoto(
-          'https://telegra.ph/file/9db8f0592835c195cb8a7.jpg',
-          { caption: `Мы находимся по адресу:\n${process.env.ADRESS}` },
-        );
-        await ctx.scene.leave();
-        break;
-      }
-      case '4': {
         await ctx.replyWithPhoto(
           'https://scontent-ams2-1.cdninstagram.com/v/t51.2885-15/297333758_1911665445696768_2324495819146856463_n.webp?stp=dst-jpg_e35&_nc_ht=scontent-ams2-1.cdninstagram.com&_nc_cat=100&_nc_ohc=NOElGD2cEjMAX-jJ9g2&edm=ALQROFkBAAAA&ccb=7-5&ig_cache_key=Mjg5NzQwMzc2NTcyMDgzODcxMA%3D%3D.2-ccb7-5&oh=00_AT9paCc56GJkaNNhEqQ0JmcmABNcHzQefszscUBZIlHbhw&oe=63395747&_nc_sid=30a2ef',
           {
@@ -115,7 +108,7 @@ export class MenuWizard {
         break;
       }
 
-      case '5': {
+      case '4': {
         const subed = await this.telegramService.checkIfSubscibed(ctx);
         if (!subed) {
           await ctx.reply(
@@ -126,7 +119,7 @@ export class MenuWizard {
                   [
                     {
                       text: 'Подписаться',
-                      url: 'https://t.me/+Dl-xAjgPb3w4Yzdi',
+                      url: 'https://t.me/jumpcitybrd',
                     },
                   ],
                 ],
@@ -140,7 +133,7 @@ export class MenuWizard {
         await ctx.scene.leave();
         break;
       }
-      case '6': {
+      case '5': {
         await ctx.reply('Введите ваше имя');
         (ctx as any).session.option = '6';
         await ctx.wizard.next();
