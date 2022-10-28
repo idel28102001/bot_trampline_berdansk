@@ -8,9 +8,11 @@ import { UsersCenterModule } from '../users-center/users-center.module';
 import { TelegramTokenEnum } from './enums/tokens/telegram.token.enum';
 import { TextsModule } from '../texts/texts.module';
 import { CouponsModule } from '../coupons/coupons.module';
+import { EventsModule } from '../events/events.module';
 
 @Module({
   imports: [
+    EventsModule,
     TextsModule,
     UsersCenterModule,
     CouponsModule,

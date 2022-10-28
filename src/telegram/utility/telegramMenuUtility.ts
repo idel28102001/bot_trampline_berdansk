@@ -18,10 +18,15 @@ export const confirmKeyboard = {
 
 export const menuKeyboard = {
   reply_markup: {
-    keyboard: chunk(
-      Object.values(MenuButtons).map((e) => ({ text: e })),
-      2,
-    ),
+    keyboard: [
+      [{ text: MenuButtons.Q0 }],
+      ...chunk(
+        Object.values(MenuButtons)
+          .slice(1)
+          .map((e) => ({ text: e })),
+        2,
+      ),
+    ],
 
     resize_keyboard: true,
     one_time_keyboard: true,

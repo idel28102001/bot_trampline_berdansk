@@ -2,15 +2,9 @@ import { format, subHours, subMinutes } from 'date-fns';
 import { config } from './config';
 import { ru } from 'date-fns/locale';
 
-export enum Texts {
-  CONSULTATION = '💎Консультация💎',
-  DIAGNOSTIC = '💫Диагностика💫',
-  EDIT = '✏Изменить встречу✏',
-  CANCEL = '🚫Отменить встречу🚫',
-  SHOW = '📅Текущие встречи📅',
-}
 
 export const MenuButtons = {
+  Q0: '🧸Участвовать в розыгрыше🧸',
   Q1: '🤹‍♂Заказать праздник ДР🤹‍♂',
   Q2: '🏒Бесплатная игра в хоккей🏒',
   Q3: '🎰Бесплатная игра в хватайку🎰',

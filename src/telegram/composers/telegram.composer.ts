@@ -9,6 +9,7 @@ import { telegramMenuUtility } from '../utility/telegramMenuUtility';
 import { CANCEL, MenuButtons } from '../../common/texts';
 import { MyContext, SessionData } from '../../common/utils';
 import { RolesEnum } from '../../users-center/enums/roles.enum';
+import { config } from '../../common/config';
 
 export const composer = (thisv2: TelegramUpdate) => {
   const composer = new Composer<
@@ -28,7 +29,7 @@ export const composer = (thisv2: TelegramUpdate) => {
     if (ctx.chat.type === 'group') {
       return;
     }
-    if (!ctx.session.role) {
+    if (!ctx.session.role.type) {
       const user = await thisv2.usersCenterService.repo.findOne({
         where: { telegramId: ctx.from.id.toString() },
         select: ['id', 'role'],
@@ -37,7 +38,7 @@ export const composer = (thisv2: TelegramUpdate) => {
         ctx.session.role.type = user.role;
       } else {
         await thisv2.usersCenterService.saveToDBUser(ctx.from);
-        ctx.session.role = RolesEnum.USER;
+        ctx.session.role.type = RolesEnum.USER;
       }
     }
     await next();
@@ -57,15 +58,51 @@ export const composer = (thisv2: TelegramUpdate) => {
   composer.use(
     createConversation(thisv2.telegramService.sendContacts, 'send_contacts'),
   );
+
+  composer.callbackQuery('curr_event', async (ctx) => {
+    await thisv2.eventsService.currEvent(ctx);
+  });
+
+  composer.use(
+    createConversation(
+      thisv2.telegramService.createEvent.bind(thisv2),
+      'create_event',
+    ),
+  );
   composer.use(
     createConversation(
       thisv2.telegramService.makeMeAdmin.bind(thisv2),
       'secretcommandmakeadmin',
     ),
   );
+  composer.hears(MenuButtons.Q0, async (ctx) => {
+    try {
+      const event = await thisv2.eventsService.getLastEvent();
+      if (!event) {
+        await ctx.reply('Пока никаких розыгрышев нет');
+        return;
+      }
+      await ctx.reply('Розыгрышь проходит в канале - переходите и участвуйте', {
+        reply_markup: {
+          inline_keyboard: [
+            [
+              {
+                text: 'Участвовать',
+                url: `https://t.me/${config.get('CHANNEL').slice(1)}/${
+                  event.messageId
+                }`,
+              },
+            ],
+          ],
+        },
+      });
+    } catch (e) {
+      console.log(e);
+    }
+  });
 
   Object.values(MenuButtons)
-    .slice(0, -1)
+    .slice(1, -1)
     .forEach((e) => {
       composer.hears(e, async (ctx) => {
         try {
@@ -74,6 +111,14 @@ export const composer = (thisv2: TelegramUpdate) => {
         } catch (e) {}
       });
     });
+
+  composer.command('create_event', async (ctx) => {
+    try {
+      await ctx.conversation.enter('create_event');
+    } catch (e) {
+      console.log(e);
+    }
+  });
 
   composer.hears(MenuButtons.Q7, async (ctx) => {
     try {

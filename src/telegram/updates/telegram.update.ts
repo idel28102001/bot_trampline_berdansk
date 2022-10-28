@@ -11,6 +11,8 @@ import { UsersCenterService } from '../../users-center/services/users-center.ser
 import { composer } from '../composers/telegram.composer';
 import { TextsTokenEnum } from '../../texts/enums/texts.token.enum';
 import { TextsService } from '../../texts/services/texts.service';
+import { EventsTokenEnum } from '../../events/enum/tokens/events.token.enum';
+import { EventsService } from '../../events/services/events.service';
 
 type MyContext = Context & ConversationFlavor;
 
@@ -22,9 +24,10 @@ export class TelegramUpdate {
     readonly telegramService: TelegramService,
     @Inject(UsersCenterTokenEnum.USERS_CENTER_SERVICES_TOKEN)
     readonly usersCenterService: UsersCenterService,
-
     @Inject(TextsTokenEnum.TEXTS_SERVICES_TOKEN)
     readonly textsService: TextsService,
+    @Inject(EventsTokenEnum.EVENTS_SERVICE_TOKEN)
+    readonly eventsService: EventsService,
   ) {
     bot.use(composer(this));
   }

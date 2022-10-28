@@ -2,11 +2,13 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { RolesEnum } from '../enums/roles.enum';
 import { CouponUserEntity } from '../../coupons/entities/coupon-user.entity';
+import { EventsEntity } from '../../events/entities/events.entity';
 
 @Entity('users')
 export class UsersCenterEntity {
@@ -36,6 +38,9 @@ export class UsersCenterEntity {
 
   @OneToMany(() => CouponUserEntity, (coupon) => coupon.user)
   coupons: CouponUserEntity[];
+
+  @ManyToOne(() => EventsEntity, (event) => event.users)
+  event: EventsEntity;
 
   @Column({ default: false })
   wantToBeSeller: boolean;
