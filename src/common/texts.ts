@@ -2,7 +2,6 @@ import { format, subHours, subMinutes } from 'date-fns';
 import { config } from './config';
 import { ru } from 'date-fns/locale';
 
-
 export const MenuButtons = {
   Q0: '🧸Участвовать в розыгрыше🧸',
   Q1: '🤹‍♂Заказать праздник ДР🤹‍♂',

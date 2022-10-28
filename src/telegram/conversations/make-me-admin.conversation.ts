@@ -9,12 +9,12 @@ export const makeMeAdmin = async (
   ctx: MyContext,
   thisv2: TelegramUpdate,
 ) => {
-  const password = await conversation.form.text();
-  if (password === config.getSecret) {
+  const newCtx = await conversation.waitFor(':text');
+  if (newCtx.msg.text === config.getSecret) {
     await conversation.external(async () => {
-      await thisv2.usersCenterService.makeAdmin(ctx.from.id.toString());
+      await thisv2.usersCenterService.makeAdmin(newCtx.from.id.toString());
     });
-    ctx.session.role.type = RolesEnum.ADMIN;
-    await ctx.reply(DIALOGS.OTHER.ADMIN);
+    newCtx.session.role.type = RolesEnum.ADMIN;
+    await newCtx.reply(DIALOGS.OTHER.ADMIN);
   }
 };

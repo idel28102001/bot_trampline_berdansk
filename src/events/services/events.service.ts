@@ -5,6 +5,7 @@ import { EventsEntity } from '../entities/events.entity';
 import { MyContext } from '../../common/utils';
 import { UsersCenterService } from '../../users-center/services/users-center.service';
 import { UsersCenterTokenEnum } from '../../users-center/enums/tokens/users-center.token.enum';
+import { config } from '../../common/config';
 
 @Injectable()
 export class EventsService {
@@ -29,6 +30,9 @@ export class EventsService {
       .where('U.telegramId=:telegramId', { telegramId: ctx.from.id.toString() })
       .select(['U.id', 'E.id'])
       .getOne();
+    const result = await ctx.api
+      .getChatMember(config.get('CHANNEL'), ctx.from.id)
+      .catch((e) => ({ status: 'left' }));
     const event = await this.eventRepo.findOne({
       order: { id: 'DESC' },
       where: { relative: true },
@@ -40,6 +44,18 @@ export class EventsService {
         cache_time: 10,
       });
     } else {
+      switch (result.status) {
+        case 'restricted':
+        case 'left':
+        case 'kicked': {
+          await ctx.answerCallbackQuery({
+            text: 'Подпишитесь на канал',
+            show_alert: true,
+            cache_time: 10,
+          });
+          return;
+        }
+      }
       user.event = event;
       await this.usersCenterService.repo.save(user);
       await ctx.answerCallbackQuery({
