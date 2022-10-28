@@ -24,12 +24,23 @@ export class EventsService {
   }
 
   async currEvent(ctx: MyContext) {
-    const user = await this.usersCenterService.repo
+    let user = await this.usersCenterService.repo
       .createQueryBuilder('U')
       .leftJoin('U.event', 'E')
       .where('U.telegramId=:telegramId', { telegramId: ctx.from.id.toString() })
       .select(['U.id', 'E.id'])
       .getOne();
+    if (!user) {
+      await this.usersCenterService.saveToDBUser(ctx.from);
+      user = await this.usersCenterService.repo
+        .createQueryBuilder('U')
+        .leftJoin('U.event', 'E')
+        .where('U.telegramId=:telegramId', {
+          telegramId: ctx.from.id.toString(),
+        })
+        .select(['U.id', 'E.id'])
+        .getOne();
+    }
     const result = await ctx.api
       .getChatMember(config.get('CHANNEL'), ctx.from.id)
       .catch((e) => ({ status: 'left' }));
