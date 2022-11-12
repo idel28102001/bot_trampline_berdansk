@@ -26,8 +26,12 @@ export const composer = (thisv2: TelegramUpdate) => {
     }),
   );
   composer.use(async (ctx: MyContext, next) => {
-    if (ctx.chat.type === 'group') {
-      return;
+    switch (ctx.chat.type) {
+      case 'channel':
+      case 'supergroup':
+      case 'group': {
+        return;
+      }
     }
     if (!ctx.session.role.type) {
       const admins = JSON.parse(`\"${process.env.ADMINS}\"` || '[]');
