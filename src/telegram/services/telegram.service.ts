@@ -15,6 +15,7 @@ import { RolesEnum } from '../../users-center/enums/roles.enum';
 import { MyContext, MyConversation } from '../../common/utils';
 import { config } from '../../common/config';
 import { menuKeyboardFunc } from '../utility/telegramMenuUtility';
+import { User } from '@grammyjs/types';
 
 @Injectable()
 export class TelegramService {
@@ -72,17 +73,20 @@ export class TelegramService {
         },
       ) as MyContext,
     );
-    console.log(user, `<a href="tg://user?id=${user.telegramId}">Участник</a>`);
-    const userId = user.username
-      ? `@${user.username}`
-      : `<a href="tg://user?id=${user.telegramId}">Участник</a>`;
-    let text2 = `Победитель - это ${userId}`;
+    let text2 = `Наш победитель`;
     if (!isSubscribed) {
       text2 += ', но к сожалению он не подписан на канал';
     }
     await ctx.reply(text2, {
       ...menuKeyboardFunc(ctx.session.role.type),
-      parse_mode: 'HTML',
+      entities: [
+        {
+          type: 'text_mention',
+          length: 10,
+          offset: 4,
+          user: { id: Number(user.telegramId) } as User,
+        },
+      ],
     });
   }
 
