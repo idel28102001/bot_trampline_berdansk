@@ -69,31 +69,37 @@ export class EventsService {
       where: { relative: true },
     });
     if (user.event && user.event.id === event.id) {
-      await ctx.answerCallbackQuery({
-        text: 'Вы уже участвуете',
-        show_alert: true,
-        cache_time: 10,
-      });
+      await ctx
+        .answerCallbackQuery({
+          text: 'Вы уже участвуете',
+          show_alert: true,
+          cache_time: 10,
+        })
+        .catch((e) => undefined);
     } else {
       switch (result.status) {
         case 'restricted':
         case 'left':
         case 'kicked': {
-          await ctx.answerCallbackQuery({
-            text: 'Подпишитесь на канал',
-            show_alert: true,
-            cache_time: 10,
-          });
+          await ctx
+            .answerCallbackQuery({
+              text: 'Подпишитесь на канал',
+              show_alert: true,
+              cache_time: 10,
+            })
+            .catch((e) => undefined);
           return;
         }
       }
       user.event = event;
       await this.usersCenterService.repo.save(user);
-      await ctx.answerCallbackQuery({
-        text: 'Вы теперь участвуете',
-        show_alert: true,
-        cache_time: 10,
-      });
+      await ctx
+        .answerCallbackQuery({
+          text: 'Вы теперь участвуете',
+          show_alert: true,
+          cache_time: 10,
+        })
+        .catch((e) => undefined);
     }
   }
 

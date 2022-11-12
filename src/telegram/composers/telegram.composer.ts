@@ -152,6 +152,7 @@ export const composer = (thisv2: TelegramUpdate) => {
   //   try {
   //     await ctx.conversation.enter('promo');
   //   } catch (e) {}
+  //   } catch (e) {}
   // });
 
   composer.command('secretcommandmakeadmin', async (ctx) => {
