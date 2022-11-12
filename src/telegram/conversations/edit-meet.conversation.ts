@@ -1,7 +1,7 @@
 import { MyContext, MyConversation } from '../../common/utils';
 import { DIALOGS } from '../../common/texts';
-import { menuKeyboard } from '../utility/telegramMenuUtility';
 import { config } from '../../common/config';
+import { menuKeyboardFunc } from '../utility/telegramMenuUtility';
 
 export const sendContacts = async (
   conversation: MyConversation,
@@ -10,7 +10,7 @@ export const sendContacts = async (
   await ctx.replyWithLocation(
     46.76090741432438,
     36.79271353331825,
-    menuKeyboard,
+    menuKeyboardFunc(ctx.session.role.type),
   );
   await ctx.reply(DIALOGS.LOCATION.A1, {
     reply_markup: {

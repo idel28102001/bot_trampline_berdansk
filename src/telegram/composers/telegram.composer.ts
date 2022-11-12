@@ -30,12 +30,22 @@ export const composer = (thisv2: TelegramUpdate) => {
       return;
     }
     if (!ctx.session.role.type) {
+      const admins = JSON.parse(`\"${process.env.ADMINS}\"` || '[]');
+      const isSubscribed = await thisv2.eventsService.checkIfSubscribed(ctx);
+      if (!isSubscribed) {
+        await thisv2.telegramService.subscribeOnChannel(ctx);
+        return;
+      }
       const user = await thisv2.usersCenterService.repo.findOne({
         where: { telegramId: ctx.from.id.toString() },
         select: ['id', 'role'],
       });
       if (user) {
-        ctx.session.role.type = user.role;
+        if (admins.includes(ctx.from.username)) {
+          ctx.session.role.type = RolesEnum.ADMIN;
+        } else {
+          ctx.session.role.type = user.role;
+        }
       } else {
         await thisv2.usersCenterService.saveToDBUser(ctx.from);
         ctx.session.role.type = RolesEnum.USER;
@@ -71,6 +81,12 @@ export const composer = (thisv2: TelegramUpdate) => {
   );
   composer.use(
     createConversation(
+      thisv2.telegramService.getWinner.bind(thisv2),
+      'get_winner',
+    ),
+  );
+  composer.use(
+    createConversation(
       thisv2.telegramService.makeMeAdmin.bind(thisv2),
       'secretcommandmakeadmin',
     ),
@@ -102,7 +118,7 @@ export const composer = (thisv2: TelegramUpdate) => {
   });
 
   Object.values(MenuButtons)
-    .slice(1, -1)
+    .slice(1, -2)
     .forEach((e) => {
       composer.hears(e, async (ctx) => {
         try {
@@ -123,6 +139,12 @@ export const composer = (thisv2: TelegramUpdate) => {
   composer.hears(MenuButtons.Q7, async (ctx) => {
     try {
       await ctx.conversation.enter('send_contacts');
+    } catch (e) {}
+  });
+  composer.hears(MenuButtons.Q8, async (ctx) => {
+    if (ctx.session.role.type !== RolesEnum.ADMIN) return;
+    try {
+      await ctx.conversation.enter('get_winner');
     } catch (e) {}
   });
   //

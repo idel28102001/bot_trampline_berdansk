@@ -10,7 +10,7 @@ import { Keyboard } from 'grammy';
 import { cancelKeyboard } from '../../common/constants';
 import {
   confirmKeyboard,
-  menuKeyboard,
+  menuKeyboardFunc,
   telegramMenuUtility,
 } from '../utility/telegramMenuUtility';
 import { config } from '../../common/config';
@@ -46,7 +46,7 @@ export const consDiagnostic = async (
       });
       const result = await conversation.form.select([words.Q1, words.Q2]);
       if (result === words.Q2) {
-        await ctx.reply(words.A2, menuKeyboard);
+        await ctx.reply(words.A2, menuKeyboardFunc(ctx.session.role.type));
         return;
       }
     }
@@ -146,7 +146,10 @@ export const consDiagnostic = async (
         .catch((e) => {
           console.log(e);
         });
-      await ctx.reply(DIALOGS.MEETINGS.CREATE.ALL.A1, menuKeyboard); //TEST
+      await ctx.reply(
+        DIALOGS.MEETINGS.CREATE.ALL.A1,
+        menuKeyboardFunc(ctx.session.role.type),
+      ); //TEST
       return;
     }
     case DIALOGS.CONFIRMATION.KEYBOARD.REEDIT: {

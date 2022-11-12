@@ -1,5 +1,5 @@
 import { Context } from 'grammy';
-import { Ctx, Help, Start, Update } from '@grammyjs/nestjs';
+import { Ctx, Start, Update } from '@grammyjs/nestjs';
 import { ConversationFlavor } from '@grammyjs/conversations';
 import { InjectBot } from 'nestjs-telegraf';
 import { telegramMenuUtility } from '../utility/telegramMenuUtility';
@@ -33,13 +33,8 @@ export class TelegramUpdate {
   }
 
   @Start()
-  async onStart(@Ctx() ctx: Context): Promise<void> {
+  async onStart(@Ctx() ctx: MyContext): Promise<void> {
     await this.usersCenterService.saveToDBUser(ctx.from);
     await telegramMenuUtility(ctx);
-  }
-
-  @Help()
-  async onHelp(@Ctx() ctx: Context): Promise<void> {
-    await ctx.reply('Это бот записей на онлайн приём к Эльмире Гатауллиной');
   }
 }

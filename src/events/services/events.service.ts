@@ -23,7 +23,7 @@ export class EventsService {
     });
   }
 
-  async currEvent(ctx: MyContext) {
+  async getUserAndChatStatus(ctx: MyContext) {
     let user = await this.usersCenterService.repo
       .createQueryBuilder('U')
       .leftJoin('U.event', 'E')
@@ -43,7 +43,27 @@ export class EventsService {
     }
     const result = await ctx.api
       .getChatMember(config.get('CHANNEL'), ctx.from.id)
-      .catch((e) => ({ status: 'left' }));
+      .catch((e) => {
+        console.log(e, ctx.from.id, config.get('CHANNEL'));
+        return { status: 'left' };
+      });
+    return { result, user };
+  }
+
+  async checkIfSubscribed(ctx: MyContext) {
+    const { result } = await this.getUserAndChatStatus(ctx);
+    switch (result.status) {
+      case 'restricted':
+      case 'left':
+      case 'kicked': {
+        return false;
+      }
+    }
+    return true;
+  }
+
+  async currEvent(ctx: MyContext) {
+    const { user, result } = await this.getUserAndChatStatus(ctx);
     const event = await this.eventRepo.findOne({
       order: { id: 'DESC' },
       where: { relative: true },
