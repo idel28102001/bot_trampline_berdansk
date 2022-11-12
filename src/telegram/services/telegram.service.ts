@@ -72,6 +72,7 @@ export class TelegramService {
         },
       ) as MyContext,
     );
+    console.log(user, `<a href="tg://user?id=${user.telegramId}">Участник</a>`);
     const userId = user.username
       ? `@${user.username}`
       : `<a href="tg://user?id=${user.telegramId}">Участник</a>`;
