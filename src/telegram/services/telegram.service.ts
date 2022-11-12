@@ -77,6 +77,7 @@ export class TelegramService {
     if (!isSubscribed) {
       text2 += ', но к сожалению он не подписан на канал';
     }
+    console.log(user);
     await ctx.reply(text2, {
       ...menuKeyboardFunc(ctx.session.role.type),
       entities: [
