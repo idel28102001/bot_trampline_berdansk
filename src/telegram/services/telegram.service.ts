@@ -72,11 +72,17 @@ export class TelegramService {
         },
       ) as MyContext,
     );
-    let text2 = `Победитель - это @${user.username}`;
+    const userId = user.username
+      ? `@${user.username}`
+      : `<a href="tg://user?id=${user.telegramId}">Участник</a>`;
+    let text2 = `Победитель - это ${userId}`;
     if (!isSubscribed) {
       text2 += ', но к сожалению он не подписан на канал';
     }
-    await ctx.reply(text2, menuKeyboardFunc(ctx.session.role.type));
+    await ctx.reply(text2, {
+      ...menuKeyboardFunc(ctx.session.role.type),
+      parse_mode: 'HTML',
+    });
   }
 
   async sendContacts(conversation: MyConversation, ctx: MyContext) {
