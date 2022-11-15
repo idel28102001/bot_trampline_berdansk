@@ -76,7 +76,6 @@ export const composer = (thisv2: TelegramUpdate) => {
   );
 
   composer.callbackQuery('curr_event', async (ctx) => {
-    console.log(ctx);
     await thisv2.eventsService.currEvent(ctx);
   });
 
