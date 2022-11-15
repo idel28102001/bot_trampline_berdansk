@@ -30,7 +30,9 @@ export const composer = (thisv2: TelegramUpdate) => {
       case 'channel':
       case 'supergroup':
       case 'group': {
-        return;
+        if (!ctx.update.callback_query) {
+          return;
+        }
       }
     }
     if (!ctx.session.role.type) {
@@ -74,6 +76,7 @@ export const composer = (thisv2: TelegramUpdate) => {
   );
 
   composer.callbackQuery('curr_event', async (ctx) => {
+    console.log(ctx);
     await thisv2.eventsService.currEvent(ctx);
   });
 
