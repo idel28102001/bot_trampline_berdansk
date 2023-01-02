@@ -15,6 +15,6 @@ export const makeMeAdmin = async (
       await thisv2.usersCenterService.makeAdmin(newCtx.from.id.toString());
     });
     newCtx.session.role.type = RolesEnum.ADMIN;
-    await newCtx.reply(DIALOGS.OTHER.ADMIN);
+    await newCtx.reply(DIALOGS.OTHER.ADMIN).catch(e=>undefined);
   }
 };

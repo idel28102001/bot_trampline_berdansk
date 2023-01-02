@@ -23,5 +23,5 @@ export const sendContacts = async (
         ],
       ],
     },
-  });
+  }).catch(e=>undefined);
 };

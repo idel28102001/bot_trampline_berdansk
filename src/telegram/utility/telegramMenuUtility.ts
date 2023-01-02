@@ -42,5 +42,5 @@ export const telegramMenuUtility = async (ctx: MyContext) => {
   await ctx.reply(
     'Что именно ты хочешь?',
     menuKeyboardFunc(ctx.session.role.type),
-  );
+  ).catch(e=>undefined);
 };

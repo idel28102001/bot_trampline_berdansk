@@ -59,7 +59,7 @@ export class CouponsService {
       .select(['C.name', 'C.id'])
       .getOne();
     if (!HopCoupon) {
-      await ctx.reply('Промокодов пока нет, но не беда!');
+      await ctx.reply('Промокодов пока нет, но не беда!').catch(e=>undefined);
       return;
     }
     const coupon = await this.couponUserRepo
@@ -87,7 +87,7 @@ export class CouponsService {
         .select(['U.id', 'coupons'])
         .getOne();
       if (!HopCoupon) {
-        await ctx.reply('Пока купонов нет, но вы подождите, скоро всё будет!');
+        await ctx.reply('Пока купонов нет, но вы подождите, скоро всё будет!').catch(e=>undefined);
       } else {
         const value = parseInt(String(100000 * Math.random())).toString();
         const cuser = this.couponUserRepo.create({
@@ -102,7 +102,7 @@ export class CouponsService {
             caption: `${HopCoupon.name}\n\nПромокод: ${value}`,
             reply_markup: { keyboard: KEYBOARD_MENU, resize_keyboard: true },
           },
-        );
+        ).catch(e=>undefined);
       }
     } else {
       await ctx.replyWithPhoto(
@@ -111,7 +111,7 @@ export class CouponsService {
           caption: `${HopCoupon.name}\n\nПромокод: ${coupon.value}`,
           reply_markup: { keyboard: KEYBOARD_MENU, resize_keyboard: true },
         },
-      );
+      ).catch(e=>undefined);
     }
   }
 }

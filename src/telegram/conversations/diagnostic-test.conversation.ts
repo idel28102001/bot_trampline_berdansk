@@ -10,5 +10,5 @@ export const diagnosticTest = async (
   ctx: MyContext,
   thisv2: TelegramUpdate,
 ) => {
-  await ctx.reply('Мы в тесте');
+  await ctx.reply('Мы в тесте').catch(e=>undefined);
 };

@@ -41,9 +41,9 @@ export class TextsService {
         resize_keyboard: true,
         one_time_keyboard: true,
       },
-    });
+    }).catch(e=>undefined);
     const age = await conversation.form.select(ages, async (ctx) => {
-      await ctx.reply(DIALOGS.MEETINGS.DATE.A7);
+      await ctx.reply(DIALOGS.MEETINGS.DATE.A7).catch(e=>undefined);
     });
     const counts = DIALOGS.MEETINGS.DATE.A5;
     await ctx.reply(DIALOGS.MEETINGS.DATE.A4, {
@@ -52,7 +52,7 @@ export class TextsService {
         resize_keyboard: true,
         one_time_keyboard: true,
       },
-    });
+    }).catch(e=>undefined);
     const count = await conversation.form.select(counts, choose);
     return DIALOGS.MEETINGS.DATE.A6(dayDate, age, count);
   }
@@ -88,7 +88,7 @@ export class TextsService {
         resize_keyboard: true,
         one_time_keyboard: true,
       },
-    });
+    }).catch(e=>undefined);
     const day = await conversation.form.select(days.map((e) => e.text));
     return DIALOGS.MEETINGS.DATE.A9(day);
   }
@@ -113,7 +113,7 @@ export class TextsService {
         resize_keyboard: true,
         one_time_keyboard: true,
       },
-    });
+    }).catch(e=>undefined);
     const month = await conversation.form.select(
       months.map((e) => e.text),
       choose,
@@ -138,7 +138,7 @@ export class TextsService {
         resize_keyboard: true,
         one_time_keyboard: true,
       },
-    });
+    }).catch(e=>undefined);
     const day = await conversation.form.select(
       currDays.map((e) => e.text),
       choose,

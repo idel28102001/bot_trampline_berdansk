@@ -25,7 +25,7 @@ export const formatPhone = (phone: string) => {
 };
 
 export const choose = async (ctx: MyContext) => {
-  await ctx.reply('Выберите пункт из предложенных вариантов');
+  await ctx.reply('Выберите пункт из предложенных вариантов').catch(e=>undefined);
 };
 export type MyConversation = Conversation<MyContext>;
 export type MyContext = Context &

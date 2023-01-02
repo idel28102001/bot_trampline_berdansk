@@ -17,7 +17,7 @@ export const composer = (thisv2: TelegramUpdate) => {
   >();
   composer.callbackQuery('done', async (ctx) => {
     try {
-      await ctx.editMessageReplyMarkup(null);
+      await ctx.editMessageReplyMarkup(null).catch(e=>undefined);
     } catch (e) {}
   });
   composer.use(
@@ -101,7 +101,7 @@ export const composer = (thisv2: TelegramUpdate) => {
     try {
       const event = await thisv2.eventsService.getLastEvent();
       if (!event) {
-        await ctx.reply('Пока никаких розыгрышев нет');
+        await ctx.reply('Пока никаких розыгрышев нет').catch(e=>undefined);
         return;
       }
       await ctx.reply('Розыгрышь проходит в канале - переходите и участвуйте', {

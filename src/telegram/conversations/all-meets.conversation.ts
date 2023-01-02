@@ -16,12 +16,12 @@ export const createEvent = async (
       resize_keyboard: true,
       one_time_keyboard: true,
     },
-  });
+  }).catch(e=>undefined);
   let currTime;
   while (true) {
     currTime = await conversation.form.text();
     if (!/\d{2}-\d{2}-\d{4} \d{2}:\d{2}/.test(currTime)) {
-      await ctx.reply('Введите дату в формате дд-мм-гггг чч:мм');
+      await ctx.reply('Введите дату в формате дд-мм-гггг чч:мм').catch(e=>undefined);
     } else {
       break;
     }
@@ -35,7 +35,7 @@ export const createEvent = async (
       resize_keyboard: true,
       one_time_keyboard: true,
     },
-  });
+  }).catch(e=>undefined);
   const currText = await conversation.form.text(async (ctx) => {
     await ctx.reply('Введите текст розыгрыша', {
       reply_markup: {
@@ -43,7 +43,7 @@ export const createEvent = async (
         resize_keyboard: true,
         one_time_keyboard: true,
       },
-    });
+    }).catch(e=>undefined);
   });
   const result = await ctx.api.sendMessage(config.get('CHANNEL'), currText, {
     reply_markup: {

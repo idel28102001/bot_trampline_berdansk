@@ -45,7 +45,7 @@ export class TelegramService {
         resize_keyboard: true,
         one_time_keyboard: true,
       },
-    });
+    }).catch(e=>undefined);
     await conversation.waitFor('message:dice', async (ctx) => {
       await ctx.reply('Отправьте кубик', {
         reply_markup: {
@@ -53,7 +53,7 @@ export class TelegramService {
           resize_keyboard: true,
           one_time_keyboard: true,
         },
-      });
+      }).catch(e=>undefined);
     });
     const randomIntFromInterval = (min: number, max: number) =>
       Math.floor(Math.random() * (max - min + 1) + min);
@@ -83,7 +83,7 @@ export class TelegramService {
     await ctx.reply(text2, {
       ...menuKeyboardFunc(ctx.session.role.type),
       parse_mode: 'HTML',
-    });
+    }).catch(e=>undefined);
   }
 
   async sendContacts(conversation: MyConversation, ctx: MyContext) {
@@ -102,7 +102,7 @@ export class TelegramService {
           ],
         ],
       },
-    });
+    }).catch(e=>undefined);
   }
 
   async createEvent(conversation: MyConversation, ctx: MyContext) {
