@@ -15,7 +15,6 @@ export const composer = (thisv2: TelegramUpdate) => {
   const composer = new Composer<
     Context & SessionFlavor<SessionData | any> & ConversationFlavor
   >();
-  return composer;
   composer.callbackQuery('done', async (ctx) => {
     try {
       await ctx.editMessageReplyMarkup(null).catch((e) => undefined);
