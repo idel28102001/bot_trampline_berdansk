@@ -46,6 +46,10 @@ export class EventsService {
       .catch((e) => {
         console.log(e, ctx.from.id, config.get('CHANNEL'));
         return { status: 'left' };
+      })
+      .catch((e) => {
+        console.log(e, ctx.from.id, config.get('CHANNEL'));
+        return { status: 'left' };
       });
     return { result, user };
   }
