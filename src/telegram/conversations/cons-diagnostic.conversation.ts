@@ -26,15 +26,15 @@ export const consDiagnostic = async (
       dateEvent = await thisv2.textsService.getTimes(conversation, ctx);
       break;
     }
-    case MenuButtons.Q5:
-    case MenuButtons.Q4: {
-      dateEvent = await thisv2.textsService.getSpecificDates(
-        conversation,
-        ctx,
-        [2, 4],
-      );
-      break;
-    }
+    // case MenuButtons.Q5:
+    // case MenuButtons.Q4: {
+    // dateEvent = await thisv2.textsService.getSpecificDates(
+    // conversation,
+    // ctx,
+    // [2, 4],
+    // );
+    // break;
+    // }
     case MenuButtons.Q6: {
       const words = DIALOGS.MEETINGS.EVENT;
       await ctx.reply(DIALOGS.MEETINGS.EVENT.A1, {
@@ -43,10 +43,10 @@ export const consDiagnostic = async (
           resize_keyboard: true,
           one_time_keyboard: true,
         },
-      }).catch(e=>undefined);
+      }).catch(e => undefined);
       const result = await conversation.form.select([words.Q1, words.Q2]);
       if (result === words.Q2) {
-        await ctx.reply(words.A2, menuKeyboardFunc(ctx.session.role.type)).catch(e=>undefined);
+        await ctx.reply(words.A2, menuKeyboardFunc(ctx.session.role.type)).catch(e => undefined);
         return;
       }
     }
@@ -65,14 +65,14 @@ export const consDiagnostic = async (
       one_time_keyboard: true,
     },
   };
-  await ctx.reply(forPhone.ACTION(), forPhoneKey).catch(e=>undefined);
+  await ctx.reply(forPhone.ACTION(), forPhoneKey).catch(e => undefined);
   const { msg } = await conversation.waitFor(
     ['message:contact', '::phone_number'],
     async (ctx: MyContext) => {
       await ctx.reply(
         DIALOGS.MEETINGS.CREATE.PHONE_NUMBER.ACTION(),
         forPhoneKey,
-      ).catch(e=>undefined);
+      ).catch(e => undefined);
     },
   );
   const phoneNum = msg.text ? msg.text : msg.contact.phone_number;
@@ -89,7 +89,7 @@ export const consDiagnostic = async (
       resize_keyboard: true,
       one_time_keyboard: true,
     },
-  }).catch(e=>undefined);
+  }).catch(e => undefined);
   const {
     msg: { text: addComment },
   } = await conversation.waitFor('message:text');
@@ -100,9 +100,9 @@ export const consDiagnostic = async (
       break;
     }
     case DIALOGS.MEETINGS.CREATE.COMMENT.KEYBOARD.TYPESMTH: {
-      await ctx.reply('Напишите комментарий к встрече', cancelKeyboard).catch(e=>undefined);
+      await ctx.reply('Напишите комментарий к встрече', cancelKeyboard).catch(e => undefined);
       comment = await conversation.form.text((ctx: MyContext) =>
-        ctx.reply(DIALOGS.MEETINGS.CREATE.COMMENT.ACTION).catch(e=>undefined),
+        ctx.reply(DIALOGS.MEETINGS.CREATE.COMMENT.ACTION).catch(e => undefined),
       );
       break;
     }
@@ -113,15 +113,14 @@ export const consDiagnostic = async (
 
   const cText = DIALOGS.MEETINGS.CREATE.ALL.WHOLE_TEXT;
 
-  let resText = `${cText.P1}\n${cText.P2} ${ctx.session.event}\n${
-    dateEvent ? dateEvent + '\n' : ''
-  }${cText.P3} ${phoneNumber}`;
+  let resText = `${cText.P1}\n${cText.P2} ${ctx.session.event}\n${dateEvent ? dateEvent + '\n' : ''
+    }${cText.P3} ${phoneNumber}`;
   resText = comment ? `${resText}\n${cText.P4} ${comment}` : resText;
 
   await ctx.reply(
     `${resText}\n\n${DIALOGS.CONFIRMATION.QUESTIONS.Q1}`,
     confirmKeyboard,
-  ).catch(e=>undefined);
+  ).catch(e => undefined);
   const answer = await conversation.form.select(
     Object.values(DIALOGS.CONFIRMATION.KEYBOARD),
     choose,
@@ -149,7 +148,7 @@ export const consDiagnostic = async (
       await ctx.reply(
         DIALOGS.MEETINGS.CREATE.ALL.A1,
         menuKeyboardFunc(ctx.session.role.type),
-      ).catch(e=>undefined); //TEST
+      ).catch(e => undefined); //TEST
       return;
     }
     case DIALOGS.CONFIRMATION.KEYBOARD.REEDIT: {
