@@ -6,9 +6,9 @@ type MyConversation = Conversation<MyContext>;
 type MyContext = Context & ConversationFlavor;
 
 export const diagnosticTest = async (
-  conversation: MyConversation,
-  ctx: MyContext,
-  thisv2: TelegramUpdate,
+    conversation: MyConversation,
+    ctx: MyContext,
+    thisv2: TelegramUpdate,
 ) => {
-  await ctx.reply('Мы в тесте').catch(e=>undefined);
+    await ctx.reply('Мы в тесте').catch((e) => undefined);
 };
