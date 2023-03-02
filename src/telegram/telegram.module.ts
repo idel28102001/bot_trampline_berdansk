@@ -11,22 +11,22 @@ import { CouponsModule } from '../coupons/coupons.module';
 import { EventsModule } from '../events/events.module';
 
 @Module({
-    imports: [
-        EventsModule,
-        TextsModule,
-        UsersCenterModule,
-        CouponsModule,
-        ConfigModule.forRoot(),
-        DatabaseModule,
-        NestjsGrammyModule.forRootAsync({
-            imports: [ConfigModule],
-            useFactory: async () => ({
-                token: config.get<string>('TOKEN'),
-            }),
-            inject: [ConfigService],
-        }),
-    ],
-    providers: TelegramProvider,
-    exports: [TelegramTokenEnum.TELEGRAM_SERVICES_TOKEN],
+	imports: [
+		EventsModule,
+		TextsModule,
+		UsersCenterModule,
+		CouponsModule,
+		ConfigModule.forRoot(),
+		DatabaseModule,
+		NestjsGrammyModule.forRootAsync({
+			imports: [ConfigModule],
+			useFactory: async () => ({
+				token: config.get<string>('TOKEN'),
+			}),
+			inject: [ConfigService],
+		}),
+	],
+	providers: TelegramProvider,
+	exports: [TelegramTokenEnum.TELEGRAM_SERVICES_TOKEN],
 })
 export class TelegramModule {}

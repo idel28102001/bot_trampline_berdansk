@@ -4,7 +4,7 @@ import AppDataSource from './data-source';
 import { ConfigService } from '@nestjs/config';
 
 export const DatabaseProvider: Provider = {
-    provide: DATABASE_SOURCE_TOKEN,
-    inject: [ConfigService],
-    useFactory: async () => AppDataSource.initialize(),
+	provide: DATABASE_SOURCE_TOKEN,
+	inject: [ConfigService],
+	useFactory: async () => AppDataSource.initialize(),
 };

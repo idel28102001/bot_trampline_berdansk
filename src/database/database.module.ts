@@ -4,7 +4,7 @@ import { DATABASE_SOURCE_TOKEN } from './databse.constant';
 import { ConfigService } from '@nestjs/config';
 
 @Module({
-    providers: [DatabaseProvider, ConfigService],
-    exports: [DatabaseProvider, DATABASE_SOURCE_TOKEN],
+	providers: [DatabaseProvider, ConfigService],
+	exports: [DatabaseProvider, DATABASE_SOURCE_TOKEN],
 })
 export class DatabaseModule {}

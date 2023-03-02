@@ -9,17 +9,17 @@ import { CouponsModule } from './coupons/coupons.module';
 import { EventsModule } from './events/events.module';
 
 @Module({
-    imports: [
-        DatabaseModule,
-        CouponsModule,
-        ConfigModule.forRoot({ isGlobal: true }),
-        TelegramModule,
-        UsersModule,
-        UsersCenterModule,
-        TextsModule,
-        EventsModule,
-    ],
-    controllers: [],
-    providers: [],
+	imports: [
+		DatabaseModule,
+		CouponsModule,
+		ConfigModule.forRoot({ isGlobal: true }),
+		TelegramModule,
+		UsersModule,
+		UsersCenterModule,
+		TextsModule,
+		EventsModule,
+	],
+	controllers: [],
+	providers: [],
 })
 export class AppModule {}

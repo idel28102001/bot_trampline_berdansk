@@ -18,23 +18,23 @@ type MyContext = Context & ConversationFlavor;
 
 @Update()
 export class TelegramUpdate {
-    constructor(
-        @InjectBot() private readonly bot,
-        @Inject(TelegramTokenEnum.TELEGRAM_SERVICES_TOKEN)
-        readonly telegramService: TelegramService,
-        @Inject(UsersCenterTokenEnum.USERS_CENTER_SERVICES_TOKEN)
-        readonly usersCenterService: UsersCenterService,
-        @Inject(TextsTokenEnum.TEXTS_SERVICES_TOKEN)
-        readonly textsService: TextsService,
-        @Inject(EventsTokenEnum.EVENTS_SERVICE_TOKEN)
-        readonly eventsService: EventsService,
-    ) {
-        bot.use(composer(this));
-    }
+	constructor(
+		@InjectBot() private readonly bot,
+		@Inject(TelegramTokenEnum.TELEGRAM_SERVICES_TOKEN)
+		readonly telegramService: TelegramService,
+		@Inject(UsersCenterTokenEnum.USERS_CENTER_SERVICES_TOKEN)
+		readonly usersCenterService: UsersCenterService,
+		@Inject(TextsTokenEnum.TEXTS_SERVICES_TOKEN)
+		readonly textsService: TextsService,
+		@Inject(EventsTokenEnum.EVENTS_SERVICE_TOKEN)
+		readonly eventsService: EventsService,
+	) {
+		bot.use(composer(this));
+	}
 
-    @Start()
-    async onStart(@Ctx() ctx: MyContext): Promise<void> {
-        await this.usersCenterService.saveToDBUser(ctx.from);
-        await telegramMenuUtility(ctx);
-    }
+	@Start()
+	async onStart(@Ctx() ctx: MyContext): Promise<void> {
+		await this.usersCenterService.saveToDBUser(ctx.from);
+		await telegramMenuUtility(ctx);
+	}
 }

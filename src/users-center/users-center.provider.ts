@@ -6,14 +6,14 @@ import { DATABASE_SOURCE_TOKEN } from '../database/databse.constant';
 import { DataSource } from 'typeorm';
 
 export const UsersCenterProvider: Provider[] = [
-    {
-        provide: UsersCenterTokenEnum.USERS_CENTER_SERVICES_TOKEN,
-        useClass: UsersCenterService,
-    },
-    {
-        provide: UsersCenterTokenEnum.USERS_CENTER_REPOSITORY_TOKEN,
-        inject: [DATABASE_SOURCE_TOKEN],
-        useFactory: (dataSource: DataSource) =>
-            dataSource.getRepository(UsersCenterEntity),
-    },
+	{
+		provide: UsersCenterTokenEnum.USERS_CENTER_SERVICES_TOKEN,
+		useClass: UsersCenterService,
+	},
+	{
+		provide: UsersCenterTokenEnum.USERS_CENTER_REPOSITORY_TOKEN,
+		inject: [DATABASE_SOURCE_TOKEN],
+		useFactory: (dataSource: DataSource) =>
+			dataSource.getRepository(UsersCenterEntity),
+	},
 ];
