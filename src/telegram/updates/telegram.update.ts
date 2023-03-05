@@ -13,6 +13,8 @@ import { TextsTokenEnum } from '../../texts/enums/texts.token.enum';
 import { TextsService } from '../../texts/services/texts.service';
 import { EventsTokenEnum } from '../../events/enum/tokens/events.token.enum';
 import { EventsService } from '../../events/services/events.service';
+import { CodesService } from 'src/codes/codes.service';
+import { CodesTokenEnum } from 'src/codes/enums/tokens/codes.token.enum';
 
 type MyContext = Context & ConversationFlavor;
 
@@ -22,6 +24,8 @@ export class TelegramUpdate {
 		@InjectBot() private readonly bot,
 		@Inject(TelegramTokenEnum.TELEGRAM_SERVICES_TOKEN)
 		readonly telegramService: TelegramService,
+		@Inject(CodesTokenEnum.CODES_SERVICE_TOKEN)
+		readonly codesService: CodesService,
 		@Inject(UsersCenterTokenEnum.USERS_CENTER_SERVICES_TOKEN)
 		readonly usersCenterService: UsersCenterService,
 		@Inject(TextsTokenEnum.TEXTS_SERVICES_TOKEN)

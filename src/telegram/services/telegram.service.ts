@@ -15,6 +15,9 @@ import { RolesEnum } from '../../users-center/enums/roles.enum';
 import { MyContext, MyConversation } from '../../common/utils';
 import { config } from '../../common/config';
 import { menuKeyboardFunc } from '../utility/telegramMenuUtility';
+import { codesCreate } from '../conversations/codes-create.conversation';
+import { codesCheck } from '../conversations/codes-check.conversation';
+import { codesInput } from '../conversations/codes-input.conversation';
 
 @Injectable()
 export class TelegramService {
@@ -28,16 +31,39 @@ export class TelegramService {
 		private readonly textsService: TextsService,
 	) {}
 
+	async codesInput(
+		this: TelegramUpdate,
+		conversation: MyConversation,
+		ctx: MyContext,
+	) {
+		return codesInput.call(this, conversation, ctx);
+	}
+
+	async codesCheck(
+		this: TelegramUpdate,
+		conversation: MyConversation,
+		ctx: MyContext,
+	) {
+		if (ctx.session.role.type !== RolesEnum.ADMIN) return;
+		return codesCheck.call(this, conversation, ctx);
+	}
+
 	async getWinner(conversation: MyConversation, ctx: MyContext) {
 		const thisv2 = this as unknown as TelegramUpdate;
 		const users = await conversation.external(async () => {
 			const lastEvent = await thisv2.eventsService.getLastEvent();
+			if (!lastEvent) return null;
 			return await thisv2.usersCenterService.repo
 				.createQueryBuilder('U')
 				.leftJoin('U.event', 'event')
 				.where('event.id=:eventId', { eventId: lastEvent.id })
 				.getMany();
 		});
+		const type = (ctx as any).session.role.type;
+		if (!users)
+			return ctx
+				.reply('Нет никаких розыгрышей', menuKeyboardFunc(type))
+				.catch((e) => undefined);
 		const text = `Кол-во участвующих ${users.length}\nОтправьте кубик, чтобы найти победителя`;
 		await ctx
 			.reply(text, {

@@ -9,6 +9,7 @@ import { TelegramTokenEnum } from './enums/tokens/telegram.token.enum';
 import { TextsModule } from '../texts/texts.module';
 import { CouponsModule } from '../coupons/coupons.module';
 import { EventsModule } from '../events/events.module';
+import { CodesModule } from 'src/codes/codes.module';
 
 @Module({
 	imports: [
@@ -16,6 +17,7 @@ import { EventsModule } from '../events/events.module';
 		TextsModule,
 		UsersCenterModule,
 		CouponsModule,
+		CodesModule,
 		ConfigModule.forRoot(),
 		DatabaseModule,
 		NestjsGrammyModule.forRootAsync({

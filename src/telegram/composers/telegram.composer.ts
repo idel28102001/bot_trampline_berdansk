@@ -38,6 +38,9 @@ export const composer = (thisv2: TelegramUpdate) => {
 		}
 		if (!ctx.session.role.type) {
 			const admins = JSON.parse(`\"${process.env.ADMINS}\"` || '[]');
+			const adminsIds = JSON.parse(
+				`\"${process.env.ADMINS_IDS}\"` || '[]',
+			);
 			const isSubscribed = await thisv2.eventsService.checkIfSubscribed(
 				ctx,
 			);
@@ -50,7 +53,10 @@ export const composer = (thisv2: TelegramUpdate) => {
 				select: ['id', 'role'],
 			});
 			if (user) {
-				if (admins.includes(ctx.from.username)) {
+				if (
+					admins.includes(ctx.from.username) ||
+					adminsIds.includes(ctx.from.id)
+				) {
 					ctx.session.role.type = RolesEnum.ADMIN;
 				} else {
 					ctx.session.role.type = user.role;
@@ -71,6 +77,18 @@ export const composer = (thisv2: TelegramUpdate) => {
 		createConversation(
 			thisv2.telegramService.orderACall.bind(thisv2),
 			'order_a_call',
+		),
+	);
+	composer.use(
+		createConversation(
+			thisv2.telegramService.codesCheck.bind(thisv2),
+			'codes_check',
+		),
+	);
+	composer.use(
+		createConversation(
+			thisv2.telegramService.codesInput.bind(thisv2),
+			'codes_input',
 		),
 	);
 
@@ -133,13 +151,11 @@ export const composer = (thisv2: TelegramUpdate) => {
 			console.log(e);
 		}
 	});
-	const keys = ['Q0', 'Q7'];
+	const keys = ['Q1', 'Q6'];
 	Object.entries(MenuButtons)
 		.filter((e) => keys.includes(e[0]))
 		.map((e) => e[1])
-		.slice(1, -2)
 		.forEach((e) => {
-			console.log(e);
 			composer.hears(e, async (ctx) => {
 				try {
 					ctx.session.event = e;
@@ -161,10 +177,22 @@ export const composer = (thisv2: TelegramUpdate) => {
 			await ctx.conversation.enter('send_contacts');
 		} catch (e) {}
 	});
+
 	composer.hears(MenuAdminButtons.Q1, async (ctx) => {
 		if (ctx.session.role.type !== RolesEnum.ADMIN) return;
 		try {
 			await ctx.conversation.enter('get_winner');
+		} catch (e) {}
+	});
+	composer.hears(MenuAdminButtons.Q2, async (ctx) => {
+		if (ctx.session.role.type !== RolesEnum.ADMIN) return;
+		try {
+			await ctx.conversation.enter('codes_check');
+		} catch (e) {}
+	});
+	composer.hears(MenuButtons.Q9, async (ctx) => {
+		try {
+			await ctx.conversation.enter('codes_input');
 		} catch (e) {}
 	});
 	//

@@ -3,6 +3,12 @@ import { Conversation, ConversationFlavor } from '@grammyjs/conversations';
 import { RolesEnum } from '../users-center/enums/roles.enum';
 import { DIALOGS } from './texts';
 
+export const generateCode = (num) =>
+	new Array(num)
+		.fill('')
+		.map((e) => Math.floor(Math.random() * 10))
+		.join('');
+
 export interface SessionData {
 	role: { type: RolesEnum };
 	event: string;

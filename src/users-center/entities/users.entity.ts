@@ -3,12 +3,15 @@ import {
 	CreateDateColumn,
 	Entity,
 	ManyToOne,
+	ManyToMany,
+	JoinTable,
 	OneToMany,
 	PrimaryGeneratedColumn,
 } from 'typeorm';
 import { RolesEnum } from '../enums/roles.enum';
 import { CouponUserEntity } from '../../coupons/entities/coupon-user.entity';
 import { EventsEntity } from '../../events/entities/events.entity';
+import { CodesEntity } from '../../codes/entities/codes.entity';
 
 @Entity('users')
 export class UsersCenterEntity {
@@ -38,6 +41,10 @@ export class UsersCenterEntity {
 
 	@OneToMany(() => CouponUserEntity, (coupon) => coupon.user)
 	coupons: CouponUserEntity[];
+
+	@ManyToMany(() => CodesEntity, (code) => code.users)
+	@JoinTable()
+	codes: CodesEntity[];
 
 	@ManyToOne(() => EventsEntity, (event) => event.users)
 	event: EventsEntity;

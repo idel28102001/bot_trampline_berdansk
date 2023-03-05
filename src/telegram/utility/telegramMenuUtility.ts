@@ -27,7 +27,10 @@ export const menuKeyboardFunc = (role: RolesEnum) => {
 		2,
 	);
 	if (role === RolesEnum.ADMIN) {
-		keyboard.unshift([{ text: MenuAdminButtons.Q1 }]);
+		keyboard.unshift([
+			{ text: MenuAdminButtons.Q2 },
+			{ text: MenuAdminButtons.Q1 },
+		]);
 	}
 	return {
 		reply_markup: {

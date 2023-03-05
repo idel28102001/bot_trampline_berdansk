@@ -7,6 +7,7 @@ import { ConfigModule } from '@nestjs/config';
 import { TextsModule } from './texts/texts.module';
 import { CouponsModule } from './coupons/coupons.module';
 import { EventsModule } from './events/events.module';
+import { CodesModule } from './codes/codes.module';
 
 @Module({
 	imports: [
@@ -18,6 +19,7 @@ import { EventsModule } from './events/events.module';
 		UsersCenterModule,
 		TextsModule,
 		EventsModule,
+		CodesModule,
 	],
 	controllers: [],
 	providers: [],
