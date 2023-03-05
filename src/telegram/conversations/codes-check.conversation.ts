@@ -21,7 +21,7 @@ export async function codesCheck(
 		return await this.codesService.getAllUnexpiredCodesFormatted();
 	});
 	await ctx
-		.reply(codes.join('\n'), {
+		.reply(codes.join('\n') || DIALOGS.CODES.ALL.Q1, {
 			reply_markup: {
 				keyboard: [
 					[

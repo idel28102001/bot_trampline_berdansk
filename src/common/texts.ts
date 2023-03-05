@@ -170,6 +170,9 @@ export const DIALOGS = {
 		NEXT: {
 			A1: 'Продолжить',
 		},
+		ALL: {
+			Q1: 'Кодов пока нет',
+		},
 		OPTIONS: {
 			CHANGE: 'Изменить код',
 			DELETE: 'Удалить код',
