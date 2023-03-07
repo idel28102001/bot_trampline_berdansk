@@ -20,23 +20,26 @@ export async function codesCheck(
 	const codes = await conversation.external(async () => {
 		return await this.codesService.getAllUnexpiredCodesFormatted();
 	});
-	await ctx
-		.reply(codes.join('\n') || DIALOGS.CODES.ALL.Q1, {
-			reply_markup: {
-				keyboard: [
-					[
-						{ text: 'Изменить код' },
-						{ text: 'Удалить код' },
-						{ text: 'Создать код' },
-					],
-					[{ text: CANCEL }],
-				],
-				resize_keyboard: true,
-			},
-		})
-		.catch((e) => undefined);
 	const options = Object.values(DIALOGS.CODES.OPTIONS);
-	const answer = await conversation.form.select(options);
+	const func = async () => {
+		await ctx
+			.reply(codes.join('\n') || DIALOGS.CODES.ALL.Q1, {
+				reply_markup: {
+					keyboard: [
+						[
+							{ text: 'Изменить код' },
+							{ text: 'Удалить код' },
+							{ text: 'Создать код' },
+						],
+						[{ text: CANCEL }],
+					],
+					resize_keyboard: true,
+				},
+			})
+			.catch((e) => undefined);
+	};
+	func();
+	const answer = await conversation.form.select(options, func);
 	switch (answer) {
 		case DIALOGS.CODES.OPTIONS.CREATE: {
 			await codesCreate.call(this, conversation, ctx);
