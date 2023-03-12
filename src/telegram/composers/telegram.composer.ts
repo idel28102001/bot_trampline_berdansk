@@ -131,7 +131,7 @@ export const composer = (thisv2: TelegramUpdate) => {
 				return;
 			}
 			await ctx.reply(
-				'Розыгрышь проходит в канале - переходите и участвуйте',
+				'Розыгрыш проходит в канале - переходите и участвуйте',
 				{
 					reply_markup: {
 						inline_keyboard: [
