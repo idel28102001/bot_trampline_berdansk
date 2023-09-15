@@ -1,0 +1,30 @@
+version: '2'
+services:
+  app:
+    restart: on-failure
+    build: .
+    depends_on:
+      - postgres
+    environment:
+      DATABASE_URL: postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:${POSTGRES_PORT}/${POSTGRES_DB}
+      NODE_ENV: development
+      PORT: 3000
+    ports:
+      - "3000:3000"
+    command: > 
+      bash -c "
+        npm run migrate:generate &&
+        npm run migrate:up &&
+        npm run start"
+    volumes:
+      - .:/app/
+      - /app/node_modules
+
+  postgres:
+    image: postgres:11
+    ports:
+      - "35432:${POSTGRES_PORT}"
+    environment:
+      POSTGRES_USER: "${POSTGRES_USER}"
+      POSTGRES_PASSWORD: "${POSTGRES_PASSWORD}"
+      POSTGRES_DB: "${POSTGRES_DB}"
